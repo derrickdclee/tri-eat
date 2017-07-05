@@ -1,7 +1,8 @@
 div.wrapper
   p.hello Hello!
   span#yo Yo!
-  img.dog(src="dog.jpg" alt="Dog")
+  - const upName = name.toUpperCase();
+  img.dog(src="dog.jpg" alt=`Dog ${upName}`)
     
 h2
   | Hello
