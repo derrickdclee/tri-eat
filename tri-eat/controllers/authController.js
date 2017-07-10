@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const promisify = require('es6-promisify');
 
 const User = mongoose.model('User');
+const mail = require('../handlers/mail');
 
 exports.login = passport.authenticate('local', {
   failureRedirect: '/login',
@@ -29,6 +30,16 @@ exports.isLoggedIn = (req, res, next) => {
   }
 };
 
+exports.isNotLoggedIn = (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    next(); // carry on they are logged in
+    return;
+  } else {
+    req.flash('error', 'Oops you are already logged in');
+    res.redirect('/');
+  }
+};
+
 exports.forgot = async (req, res) => {
   // 1. See if a user with that email exists
   // 2. Set reset tokens with expiry
@@ -44,7 +55,14 @@ exports.forgot = async (req, res) => {
   await user.save();
 
   const resetURL = `http://${req.headers.host}/account/reset/${user.resetPasswordToken}`;
-  req.flash('success', `You have been emailed a password reset link. ${resetURL}`);
+
+  await mail.send({
+    user,
+    subject: 'Password Reset',
+    resetURL,
+    filename: 'password-reset'
+  });
+  req.flash('success', 'You have been emailed a password reset link.');
   res.redirect('/login');
 };
 

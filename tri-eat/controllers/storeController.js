@@ -18,7 +18,7 @@ const Store = mongoose.model('Store'); // from start.js
 
 //===========================================================================//
 exports.homePage = (req, res) => {
-  res.render('index');
+  res.render('index', {title: 'Welcome to Tri Eat!'});
 };
 
 exports.addStore = (req, res) => {
