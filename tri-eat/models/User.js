@@ -22,6 +22,14 @@ const userSchema = new Schema({
     trim: true
   }
 });
+
+userSchema.virtual('gravatar').get(function() {
+  // not actually stored in the database
+  // virtual fields are generated "on the fly"
+  const hash = md5(this.email);
+  return `https://gravatar.com/avatar/${hash}?s=200`;
+});
+
 userSchema.plugin(passportLocalMongoose, {usernameField: 'email'});
 userSchema.plugin(mongodbErrorHandler);
 
