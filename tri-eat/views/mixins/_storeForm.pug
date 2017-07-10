@@ -12,6 +12,7 @@ mixin storeForm(store = {})
         img(src=`/uploads/${store.photo}` alt=store.name width=200)
     //- Address
     label(for="address") Address
+    //- This attr[nestedAttr] syntax is necessary
     input(type="text" id="address" name="location[address]" value=(store.location && store.location.address))
     //- Lng MUST come first
     
