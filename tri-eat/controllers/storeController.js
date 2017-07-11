@@ -28,7 +28,6 @@ exports.addStore = (req, res) => {
 // upload to memory
 exports.upload = multer(multerOptions).single('photo');
 exports.resize = async (req, res, next) => {
-  console.log(req.body);
   // check if there is no new file to resize
   if (! req.file) {
     next();
@@ -104,6 +103,11 @@ exports.getStoresByTag = async(req, res) => {
   res.render('tag', {tags, title: 'Tags', tag, stores});
 };
 
+exports.mapPage = (req, res) => {
+  res.render('map', {title: 'Map'});
+};
+
+//============================================================================//
 exports.searchStores = async (req, res) => {
   const stores = await Store.find({
     // searches for fields that are indexed as "text"
@@ -111,6 +115,7 @@ exports.searchStores = async (req, res) => {
       $search: req.query.q
     }
   }, {
+    // "projects (adds)" the score field with metadata
     score: {$meta: 'textScore'}
   })
   // this sorts by metadata in descending order
@@ -118,6 +123,25 @@ exports.searchStores = async (req, res) => {
     score: {$meta: 'textScore'}
   })
   .limit(5);
+
+  res.json(stores);
+};
+
+exports.mapStores = async (req, res) => {
+  const coordinates = [req.query.lng, req.query.lat].map(parseFloat);
+  const q = {
+    location: {
+      $near: {
+        $geometry: {
+          type: 'Point',
+          coordinates
+        },
+        $maxDistance: 10000 // 10 km
+      }
+    }
+  };
+
+  const stores = await Store.find(q).select('slug name description location photo').limit(10);
 
   res.json(stores);
 };

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise; // use the ES6 promise
 const slug = require('slugs');
+const sanitizeHTML = require('sanitize-html');
 
 const storeSchema = new mongoose.Schema({
   name: {
@@ -46,6 +47,8 @@ storeSchema.index({
   description: 'text'
 });
 
+storeSchema.index({location: '2dsphere'});
+
 storeSchema.pre('save', async function(next) {
   // if the name is not modified, skip this step
   if (!this.isModified('name')) {
@@ -59,6 +62,16 @@ storeSchema.pre('save', async function(next) {
   if (storesWithSlug.length) {
     this.slug = `${this.slug}-${storesWithSlug.length + 1}`;
   }
+  next();
+});
+
+// this functionality needs to be extended
+storeSchema.pre('save', function(next) {
+  const sanitizedName = sanitizeHTML(this.name, {
+    allowedTags: [],
+    allowedAttributes: []
+  });
+  this.name = sanitizedName;
   next();
 });
 

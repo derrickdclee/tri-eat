@@ -11,6 +11,11 @@ router.get('/stores', catchErrors(storeController.getStores));
 router.get('/add',
   authController.isLoggedIn,
   storeController.addStore);
+/*
+ 1. Upload image to memory using multer
+ 2. Resize the image and save to disk using jimp
+ 3. And finally create the store
+*/
 router.post('/add',
   storeController.upload,
   catchErrors(storeController.resize),
@@ -52,13 +57,12 @@ router.post('/account/reset/:token',
   authController.confirmedPasswords,
   catchErrors(authController.update)
 );
-
+router.get('/map', storeController.mapPage);
 /*
   API
 */
 router.get('/api/search', catchErrors(storeController.searchStores));
-
-
+router.get('/api/stores/near', catchErrors(storeController.mapStores));
 
 
 module.exports = router;
