@@ -35,6 +35,11 @@ const reviewSchema = new mongoose.Schema({
       type: Number,
       min: 1,
       max: 5
+    },
+    overall: {
+      type: Number,
+      min: 1,
+      max: 5
     }
   }
 });
@@ -46,5 +51,10 @@ function autopopulate(next) {
 
 reviewSchema.pre('find', autopopulate);
 reviewSchema.pre('findOne', autopopulate);
+reviewSchema.pre('save', function(next) {
+  this.rating.overall =
+    (this.rating.food + this.rating.service + this.rating.ambiance) / 3;
+  next();
+});
 
 module.exports = mongoose.model('Review', reviewSchema);

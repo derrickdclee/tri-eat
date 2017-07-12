@@ -119,8 +119,8 @@ exports.searchStores = async (req, res) => {
     // "projects (adds)" the score field with metadata
     score: {$meta: 'textScore'}
   })
-  // this sorts by metadata in descending order
   .sort({
+    // this sorts by metadata in descending order
     score: {$meta: 'textScore'}
   })
   .limit(5);
@@ -165,3 +165,8 @@ exports.getHearts = async (req, res) => {
   });
   res.render('stores', {title: 'Hearted Stores', stores: heartedStores});
 };
+
+exports.getTopStores = async (req, res) => {
+  const stores = await Store.getTopStores();
+  res.render('topStores', {stores});
+}

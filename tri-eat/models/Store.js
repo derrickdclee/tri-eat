@@ -85,6 +85,7 @@ storeSchema.pre('save', function(next) {
 });
 
 storeSchema.statics.getTagsList = function() {
+  // returns a promise
   return this.aggregate([
     // aggregation pipeline
     { $unwind: '$tags' },
@@ -92,5 +93,46 @@ storeSchema.statics.getTagsList = function() {
     { $sort: {count: -1}}
   ]);
 };
+
+storeSchema.statics.getTopStores = function() {
+  return this.aggregate([
+    // $field === $$CURRENT.field
+
+    // Look up Stores and populate their reviews
+    {
+      // this has nothing to do with virtual fields (something done by Mongoose)
+      // where the fuck is this 'reviews' coming from? Mongoose takes 'Review' and automatically lowercases + adds an s
+
+      // collection name, field name here, field name there, new field name to store
+      $lookup: {from: 'reviews', localField: '_id', foreignField: 'store', as: 'review_docs'}
+    },
+    // Filter for stores that have 2 or more reviews
+    { $match: {'review_docs.1' : {$exists: true} }  },
+    // Add the average reviews field
+    {
+      $project: {
+        photo: '$$ROOT.photo',
+        name: '$$ROOT.name',
+        slug: '$$ROOT.slug',
+        reviews: '$$ROOT.review_docs',
+        avgRating: {$avg: '$review_docs.rating.overall'}
+      }
+    },
+    // Sort it by our new field, highest reviews first
+    {
+      $sort: {avgRating: -1}
+    },
+    // Limit to at most 10
+    { $limit: 10}
+  ]);
+};
+
+function autopopulate(next) {
+  this.populate('reviews');
+  next();
+}
+
+storeSchema.pre('find', autopopulate);
+storeSchema.pre('findOne', autopopulate);
 
 module.exports = mongoose.model('Store', storeSchema);
