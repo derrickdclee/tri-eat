@@ -88,7 +88,7 @@ exports.updateStore = async (req, res) => {
 };
 
 exports.getStoreBySlug = async (req, res, next) => {
-  const store = await Store.findOne({slug: req.params.slug}).populate();
+  const store = await Store.findOne({slug: req.params.slug}).populate('author reviews'); // reviews is the virtual field
   if (! store) return next(); // let the error handlers handle it
   res.render('store', {store, title: store.name});
 };

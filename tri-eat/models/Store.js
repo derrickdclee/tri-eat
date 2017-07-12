@@ -39,6 +39,9 @@ const storeSchema = new mongoose.Schema({
     ref: 'User',
     required: 'You must supply an author'
   }
+}, {
+  toJSON: {virtuals: true},
+  toObject: {virtuals: true}
 });
 
 // defining indexes
@@ -48,6 +51,12 @@ storeSchema.index({
 });
 
 storeSchema.index({location: '2dsphere'});
+
+storeSchema.virtual('reviews', {
+  ref: 'Review', // what model to link?
+  localField: '_id', // which field on the store?
+  foreignField: 'store' // which field on the review?
+});
 
 storeSchema.pre('save', async function(next) {
   // if the name is not modified, skip this step

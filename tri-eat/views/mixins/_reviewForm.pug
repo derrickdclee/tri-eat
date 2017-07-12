@@ -1,0 +1,23 @@
+mixin reviewForm(store)
+  form.reviewer(action=`/reviews/${store._id}` method="POST")
+    textarea(name="text" placeholder="Did you try this place? Have something to say? Leave a review!")
+    .reviewer__meta
+      .reviewer__rating
+        h6 Food
+        .reviewer__stars
+          each num in [5,4,3,2,1]
+            input(type="radio" required id=`star${num}food` name="rating[food]" value=num)
+            label(for=`star${num}food`) #{num} Stars
+      .reviewer__rating
+        h6 Service
+        .reviewer__stars
+          each num in [5,4,3,2,1]
+            input(type="radio" required id=`star${num}service` name="rating[service]" value=num)
+            label(for=`star${num}service`) #{num} Stars
+      .reviewer__rating
+        h6 Ambiance
+        .reviewer__stars
+          each num in [5,4,3,2,1]
+            input(type="radio" required id=`star${num}ambiance` name="rating[ambiance]" value=num)
+            label(for=`star${num}ambiance`) #{num} Stars
+    input.button(type="Submit" value='Submit Review ->')

@@ -47,6 +47,8 @@
   }
   &__stars {
     color: $yellow;
+    display: flex;
+    flex-direction: column;
   }
   &__body {
     padding: 2rem;

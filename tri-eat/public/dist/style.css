@@ -989,7 +989,11 @@ label {
     font-size: 1.2rem;
     color: #999999; }
   .review__stars {
-    color: #FFC40E; }
+    color: #FFC40E;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+        flex-direction: column; }
   .review__body {
     padding: 2rem; }
   .review p {
@@ -1002,6 +1006,11 @@ label {
   position: relative;
   box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);
   margin-bottom: 2rem; }
+  .reviewer__rating {
+    text-align: center;
+    width: 100%; }
+    .reviewer__rating h6 {
+      font-size: 20px; }
   .reviewer__stars {
     display: -ms-flexbox;
     display: flex;
@@ -1020,19 +1029,19 @@ label {
         .reviewer__stars input + label:before {
           content: '\2605';
           font-size: 2rem; }
-        .reviewer__stars input + label[for="star5"] {
+        .reviewer__stars input + label[for^="star5"] {
           -ms-flex-order: 5;
               order: 5; }
-        .reviewer__stars input + label[for="star4"] {
+        .reviewer__stars input + label[for^="star4"] {
           -ms-flex-order: 4;
               order: 4; }
-        .reviewer__stars input + label[for="star3"] {
+        .reviewer__stars input + label[for^="star3"] {
           -ms-flex-order: 3;
               order: 3; }
-        .reviewer__stars input + label[for="star2"] {
+        .reviewer__stars input + label[for^="star2"] {
           -ms-flex-order: 2;
               order: 2; }
-        .reviewer__stars input + label[for="star1"] {
+        .reviewer__stars input + label[for^="star1"] {
           -ms-flex-order: 1;
               order: 1; }
         .reviewer__stars input + label:hover, .reviewer__stars input + label:hover ~ label {
@@ -1046,6 +1055,8 @@ label {
   .reviewer__meta {
     display: -ms-flexbox;
     display: flex;
+    -ms-flex-direction: column;
+        flex-direction: column;
     -ms-flex-pack: center;
         justify-content: center;
     -ms-flex-align: center;
