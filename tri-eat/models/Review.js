@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+const User = mongoose.model('User');
+
 const reviewSchema = new mongoose.Schema({
   created: {
     type: Date,
@@ -49,11 +51,47 @@ function autopopulate(next) {
   next();
 }
 
-reviewSchema.pre('find', autopopulate);
-reviewSchema.pre('findOne', autopopulate);
-reviewSchema.pre('save', function(next) {
+function calculateOverall(next) {
   this.rating.overall =
     (this.rating.food + this.rating.service + this.rating.ambiance) / 3;
+  next();
+}
+
+reviewSchema.pre('find', autopopulate);
+reviewSchema.pre('findOne', autopopulate);
+reviewSchema.pre('save', calculateOverall);
+/*
+  Note that populating pre 'save' didn't work!
+*/
+reviewSchema.pre('save', async function(next) {
+  try {
+    const author = await User.findOne({_id: this.author});
+    let numReviews;
+    let avgRating;
+
+    if (author.ratingStat.numReviews === 0) {
+      numReviews = 1;
+      avgRating = this.rating.overall;
+    } else {
+      numReviews = author.ratingStat.numReviews + 1;
+      avgRating = ( (author.ratingStat.avgRating * (numReviews - 1)) + this.rating.overall ) / numReviews;
+    }
+
+    const updates = {
+      ratingStat: {
+        numReviews, avgRating
+      }
+    };
+
+    const updatedAuthor = await User.findOneAndUpdate({_id: this.author},  updates, {
+      new: true,
+      runValidators: true
+    });
+    console.log(updatedAuthor);
+  } catch (err) {
+    console.log(err);
+  }
+
   next();
 });
 

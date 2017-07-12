@@ -3,6 +3,7 @@ mixin review(review)
     .review__author
       img.avatar(src=review.author.gravatar)
       p= review.author.name
+      p= review.author.ratingStat.avgRating
     .review__stars
       each category in ['Food', 'Service', 'Ambiance']
         .review__category
