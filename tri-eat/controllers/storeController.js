@@ -61,15 +61,14 @@ exports.getStores = async (req, res) => {
   res.render('stores', {title: 'Stores', stores});
 };
 
-const confirmOwner = (store, user) => {
-  if (!store.author.equals(user._id)) {
-    throw Error('You must own a store in order to edit it');
-  }
-};
+// const confirmOwner = (store, user) => {
+//   if (!store.author.equals(user._id)) {
+//     throw Error('You must own a store in order to edit it');
+//   }
+// };
 
 exports.editStore = async (req, res) => {
   const store = await Store.findOne({_id: req.params.id});
-  confirmOwner(store, req.user);
   res.render('editStore', {title: `Edit ${store.name}`, store});
 };
 
@@ -102,6 +101,13 @@ exports.getStoresByTag = async(req, res) => {
 
   const [tags, stores] = await Promise.all([tagsPromise, storesPromise]);
   res.render('tag', {tags, title: 'Tags', tag, stores});
+};
+
+exports.deleteStore = async(req, res) => {
+  const storeId = req.params.id;
+  await Store.findOneAndRemove({_id: storeId});
+  req.flash('success', 'Successfully deleted the store');
+  res.redirect('/stores');
 };
 
 exports.mapPage = (req, res) => {

@@ -30,6 +30,15 @@ exports.isLoggedIn = (req, res, next) => {
   }
 };
 
+exports.isAdmin = (req, res, next) => {
+  if (req.isAuthenticated() && req.user.isAdmin) {
+    return next();
+  } else {
+    req.flash('error', 'Oops you must have admin privileges to continue');
+    res.redirect('/');
+  }
+}
+
 exports.isNotLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     next(); // carry on they are logged in

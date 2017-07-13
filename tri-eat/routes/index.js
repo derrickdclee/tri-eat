@@ -10,8 +10,9 @@ const {catchErrors} = require('../handlers/errorHandlers');
 router.get('/', storeController.homePage);
 router.get('/stores', catchErrors(storeController.getStores));
 router.get('/add',
-  authController.isLoggedIn,
-  storeController.addStore);
+  authController.isAdmin,
+  storeController.addStore
+);
 /*
  1. Upload image to memory using multer
  2. Resize the image and save to disk using jimp
@@ -27,10 +28,17 @@ router.post('/add/:id',
   catchErrors(storeController.resize),
   catchErrors(storeController.updateStore)
 );
-router.get('/stores/:id/edit', catchErrors(storeController.editStore));
+router.get('/stores/:id/edit',
+  authController.isAdmin,
+  catchErrors(storeController.editStore)
+);
 router.get('/store/:slug', catchErrors(storeController.getStoreBySlug));
 router.get('/tags', catchErrors(storeController.getStoresByTag));
 router.get('/tags/:tag', catchErrors(storeController.getStoresByTag));
+router.post('/delete/:id',
+  authController.isAdmin,
+  storeController.deleteStore
+);
 
 router.get('/login',
   authController.isNotLoggedIn,
