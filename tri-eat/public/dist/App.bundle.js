@@ -2831,6 +2831,10 @@ var _heart = __webpack_require__(11);
 
 var _heart2 = _interopRequireDefault(_heart);
 
+var _average = __webpack_require__(40);
+
+var _average2 = _interopRequireDefault(_average);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (0, _autocomplete2.default)((0, _bling.$)('#address'), (0, _bling.$)('#lat'), (0, _bling.$)('#lng'));
@@ -2842,6 +2846,48 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // $$ is querySelectorAll
 // bling.js allows us to listen to events on multiple nodes
 (0, _bling.$$)('form.heart').on('submit', _heart2.default);
+
+(0, _bling.$$)('form.userAverage').on('submit', _average2.default);
+
+/***/ }),
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _axios = __webpack_require__(2);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _bling = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function ajaxGetAverageRating(e) {
+  var _this = this;
+
+  e.preventDefault();
+  _axios2.default.post(this.action).then(function (res) {
+    var rating = res.data[0].avgRating;
+    var div = _this.parentNode;
+    div.innerHTML += rating;
+  }).catch(function (err) {
+    console.log(err);
+  });
+}
+
+exports.default = ajaxGetAverageRating;
 
 /***/ })
 /******/ ]);

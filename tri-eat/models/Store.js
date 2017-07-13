@@ -94,7 +94,6 @@ storeSchema.pre('save', function(next) {
 });
 
 storeSchema.pre('remove', function(next) {
-  console.log('fuck');
   Review.remove({store: this._id}).exec();
   User.update(
     {hearts: this._id},

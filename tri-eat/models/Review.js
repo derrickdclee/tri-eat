@@ -63,36 +63,36 @@ reviewSchema.pre('save', calculateOverall);
 /*
   Note that populating pre 'save' didn't work!
 */
-reviewSchema.pre('save', async function(next) {
-  try {
-    const author = await User.findOne({_id: this.author});
-    let numReviews;
-    let avgRating;
-
-    if (author.ratingStat.numReviews === 0) {
-      numReviews = 1;
-      avgRating = this.rating.overall;
-    } else {
-      numReviews = author.ratingStat.numReviews + 1;
-      avgRating = ( (author.ratingStat.avgRating * (numReviews - 1)) + this.rating.overall ) / numReviews;
-    }
-
-    const updates = {
-      ratingStat: {
-        numReviews, avgRating
-      }
-    };
-
-    const updatedAuthor = await User.findOneAndUpdate({_id: this.author},  updates, {
-      new: true,
-      runValidators: true
-    });
-    console.log(updatedAuthor);
-  } catch (err) {
-    console.log(err);
-  }
-
-  next();
-});
+// reviewSchema.pre('save', async function(next) {
+//   try {
+//     const author = await User.findOne({_id: this.author});
+//     let numReviews;
+//     let avgRating;
+//
+//     if (author.ratingStat.numReviews === 0) {
+//       numReviews = 1;
+//       avgRating = this.rating.overall;
+//     } else {
+//       numReviews = author.ratingStat.numReviews + 1;
+//       avgRating = ( (author.ratingStat.avgRating * (numReviews - 1)) + this.rating.overall ) / numReviews;
+//     }
+//
+//     const updates = {
+//       ratingStat: {
+//         numReviews, avgRating
+//       }
+//     };
+//
+//     const updatedAuthor = await User.findOneAndUpdate({_id: this.author},  updates, {
+//       new: true,
+//       runValidators: true
+//     });
+//     console.log(updatedAuthor);
+//   } catch (err) {
+//     console.log(err);
+//   }
+//
+//   next();
+// });
 
 module.exports = mongoose.model('Review', reviewSchema);

@@ -26,20 +26,13 @@ const userSchema = new Schema({
   hearts: [
     {type: mongoose.Schema.ObjectId, ref: 'Store'}
   ],
-  ratingStat: {
-    numReviews: {
-      type: Number,
-      default: 0
-    },
-    avgRating: {
-      type: Number,
-      default: 0
-    }
-  },
   isAdmin: {
     type: Boolean,
     default: false
   }
+}, {
+  toJSON: {virtuals: true},
+  toObject: {virtuals: true}
 });
 
 userSchema.virtual('gravatar').get(function() {
@@ -49,6 +42,23 @@ userSchema.virtual('gravatar').get(function() {
   return `https://gravatar.com/avatar/${hash}?s=200`;
 });
 
+userSchema.statics.getAverageRating = function(user) {
+
+  return this.aggregate([
+    {$match: {_id: mongoose.Types.ObjectId(user)}},
+
+    {
+      $lookup: {from: 'reviews', localField: '_id', foreignField: 'author', as: 'user_reviews'}
+    },
+
+    {
+      $project: {
+        avgRating: {$avg: '$user_reviews.rating.overall'}
+      }
+    }
+
+  ]);
+};
 
 userSchema.plugin(passportLocalMongoose, {usernameField: 'email'});
 userSchema.plugin(mongodbErrorHandler);

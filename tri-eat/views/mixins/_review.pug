@@ -3,7 +3,8 @@ mixin review(review)
     .review__author
       img.avatar(src=review.author.gravatar)
       p= review.author.name
-      p= review.author.ratingStat.avgRating
+      form.userAverage(action=`/api/reviewer/${review.author._id}/avg` method="POST")
+        input.button(type="submit" value="Get Average")
     .review__stars
       each category in ['Food', 'Service', 'Ambiance']
         .review__category

@@ -33,6 +33,11 @@ router.get('/stores/:id/edit',
   authController.isAdmin,
   catchErrors(storeController.editStore)
 );
+/*
+  1. Get all the reviews associated with the store
+  2. Get the authors
+  3. For each author
+*/
 router.get('/store/:slug', catchErrors(storeController.getStoreBySlug));
 router.get('/tags', catchErrors(storeController.getStoresByTag));
 router.get('/tags/:tag', catchErrors(storeController.getStoresByTag));
@@ -84,5 +89,6 @@ router.get('/hearts',
   authController.isLoggedIn,
   catchErrors(storeController.getHearts)
 );
+router.post('/api/reviewer/:id/avg', catchErrors(userController.getAverageRating));
 
 module.exports = router;

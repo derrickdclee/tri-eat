@@ -63,3 +63,8 @@ exports.updateAccount = async (req, res) => {
   req.flash('success', 'Updated the profile successfully');
   res.redirect('back');
 };
+
+exports.getAverageRating = async (req, res) => {
+  const results = await User.getAverageRating(req.params.id);
+  res.json(results);
+};
