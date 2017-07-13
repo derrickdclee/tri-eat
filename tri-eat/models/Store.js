@@ -3,6 +3,9 @@ mongoose.Promise = global.Promise; // use the ES6 promise
 const slug = require('slugs');
 const sanitizeHTML = require('sanitize-html');
 
+const User = mongoose.model('User');
+const Review = mongoose.model('Review');
+
 const storeSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -58,6 +61,12 @@ storeSchema.virtual('reviews', {
   foreignField: 'store' // which field on the review?
 });
 
+storeSchema.virtual('heartUsers', {
+  ref: 'User',
+  localField: '_id',
+  foreignField: 'hearts'
+});
+
 storeSchema.pre('save', async function(next) {
   // if the name is not modified, skip this step
   if (!this.isModified('name')) {
@@ -81,6 +90,22 @@ storeSchema.pre('save', function(next) {
     allowedAttributes: []
   });
   this.name = sanitizedName;
+  next();
+});
+
+storeSchema.pre('remove', function(next) {
+  console.log('fuck');
+  Review.remove({store: this._id}).exec();
+  User.update(
+    {hearts: this._id},
+    {$pop:
+      {hearts: this._id}
+    },
+    {
+      multi: true,
+      runValidators: true
+    }
+  ).exec();
   next();
 });
 
@@ -128,7 +153,8 @@ storeSchema.statics.getTopStores = function() {
 };
 
 function autopopulate(next) {
-  this.populate('reviews');
+  // populating heartUsers for notifications
+  this.populate('reviews').populate('heartUsers', '_id name');
   next();
 }
 

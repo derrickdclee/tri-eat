@@ -56,9 +56,30 @@ exports.createStore = async (req, res) => {
 };
 
 exports.getStores = async (req, res) => {
+  const page = req.params.page || 1;
+  const limit = 6;
+  const skip = limit * (page - 1);
+
   // Query the db for a list of all stores
-  const stores = await Store.find();
-  res.render('stores', {title: 'Stores', stores});
+  const storesPromise = Store
+    .find()
+    .skip(skip)
+    .limit(limit)
+    .sort({createdAt: 'desc'});
+
+  const countPromise = Store.count();
+
+  const [stores, count] = await Promise.all([storesPromise, countPromise]);
+  const pages = Math.ceil(count / limit);
+
+  if (!stores.length && skip) {
+    // if the user asks for a page that doesn't exist
+    req.flash('info', `You asked for page ${page}, but since the page doesn't exist, you've been redirected to the last page.`);
+    res.redirect(`/stores/page/${pages}`);
+    return;
+  }
+
+  res.render('stores', {title: 'Stores', stores, page, pages, count});
 };
 
 // const confirmOwner = (store, user) => {
@@ -105,7 +126,8 @@ exports.getStoresByTag = async(req, res) => {
 
 exports.deleteStore = async(req, res) => {
   const storeId = req.params.id;
-  await Store.findOneAndRemove({_id: storeId});
+  const store = await Store.findOne({_id: storeId});
+  await store.remove();
   req.flash('success', 'Successfully deleted the store');
   res.redirect('/stores');
 };
