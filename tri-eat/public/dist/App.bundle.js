@@ -119,6 +119,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _bling.$$)('form.userAverage').on('submit', _average2.default);
 
+// Socket.io stuff
 var socket = (0, _socket2.default)();
 
 socket.on('connect', function () {

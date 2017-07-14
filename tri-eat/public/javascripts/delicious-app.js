@@ -22,6 +22,7 @@ $$('form.heart').on('submit', ajaxHeart);
 
 $$('form.userAverage').on('submit', ajaxGetAverageRating);
 
+// Socket.io stuff
 const socket = io();
 
 socket.on('connect', function() {

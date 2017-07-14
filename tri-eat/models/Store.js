@@ -154,7 +154,11 @@ storeSchema.statics.getTopStores = function() {
 function autopopulate(next) {
   // populating heartUsers for notifications
   this
-    .populate('heartUsers');
+    .populate('author')
+    .populate({
+      path: 'reviews',
+      options: {sort: {created: -1}}
+    });
 
   next();
 }

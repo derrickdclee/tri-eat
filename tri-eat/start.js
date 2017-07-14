@@ -26,8 +26,7 @@ const io = socketIO(server);
 
 io.on('connection', (socket) => {
   console.log('New user connected');
-  console.log(io.sockets.sockets);
-
+  //console.log(io.sockets.sockets);
   socket.on('createReview', (message) => {
     socket.broadcast.emit('newReview', {message});
   });
