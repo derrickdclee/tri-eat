@@ -24,6 +24,14 @@ block content
               
     if user
       +reviewForm(store)
+      
+    if store.reviews.length
+      .sort__container
+        select.sort
+          option(value="newest" selected=(sortBy === "newest")) Newest First
+          option(value="oldest" selected=(sortBy === "oldest")) Oldest First
+          option(value="highest" selected=(sortBy === "highest")) Highest First
+          option(value="lowest" selected=(sortBy === "lowest")) Lowest First
     
     if store.reviews
       .reviews

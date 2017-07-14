@@ -65,7 +65,8 @@ exports.getStores = async (req, res) => {
     .find()
     .skip(skip)
     .limit(limit)
-    .sort({createdAt: 'desc'});
+    .sort({createdAt: 'desc'})
+    .populate('reviews');
 
   const countPromise = Store.count();
 
@@ -108,11 +109,36 @@ exports.updateStore = async (req, res) => {
 };
 
 exports.getStoreBySlug = async (req, res, next) => {
+  let sortOptions;
+
+  if (!req.query.s) {
+    sortOptions = {created: -1};
+  } else {
+    switch (req.query.s) {
+      case 'oldest':
+        sortOptions = {created: 1};
+        break;
+      case 'newest':
+        sortOptions = {created: -1};
+        break;
+      case 'lowest':
+        // when using dot notation, the key must be in quotes
+        sortOptions = {"rating.overall": 1};
+        break;
+      case 'highest':
+        sortOptions = {"rating.overall": -1};
+    }
+  }
+
   const store = await Store
-    .findOne({slug: req.params.slug});
+    .findOne({slug: req.params.slug})
+    .populate({
+      path: 'reviews',
+      options: {sort: sortOptions}
+    });
   if (! store) return next(); // let the error handlers handle it
-  //console.log(store);
-  res.render('store', {store, title: store.name});
+  const sortBy = req.query.s || 'newest';
+  res.render('store', {store, title: store.name, sortBy: req.query.s});
 };
 
 exports.getStoresByTag = async(req, res) => {

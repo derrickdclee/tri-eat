@@ -8,6 +8,7 @@ import typeAhead from './modules/typeAhead';
 import makeMap from './modules/map';
 import ajaxHeart from './modules/heart';
 import ajaxGetAverageRating from './modules/average';
+import sortReviews from './modules/sort';
 
 autocomplete( $('#address'), $('#lat'), $('#lng'));
 
@@ -20,3 +21,5 @@ makeMap($('#map'));
 $$('form.heart').on('submit', ajaxHeart);
 
 $$('form.userAverage').on('submit', ajaxGetAverageRating);
+
+$$('select.sort').on('change', sortReviews);
