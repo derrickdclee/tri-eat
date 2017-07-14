@@ -103,7 +103,7 @@ exports.updateStore = async (req, res) => {
     runValidators: true, // force the model to run validators
   }).exec(); // used in place of a callback function
 
-  req.flash('success', `Successfully updated <strong>${store.name}</strong>. <a href="/stores/${store.slug}">View Store -></a>`);
+  req.flash('success', `Successfully updated <strong>${store.name}</strong>. <a href="/store/${store.slug}">View Store -></a>`);
   res.redirect(`/stores/${store._id}/edit`);
 };
 
