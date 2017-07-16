@@ -1,24 +1,30 @@
-mixin reviewForm(store)
-  form.reviewer(action=`/reviews/${store._id}` method="POST")
+mixin reviewForm(store, review={})
+  form.reviewer(action=`/reviews/${store._id}/${review._id || ''}` method="POST")
     textarea(name="text" placeholder="Did you try this place? Have something to say? Leave a review!")
+      if review.text
+        != review.text
     input(type="hidden" name="reviewerName" value=user.name)
     .reviewer__meta
       .reviewer__rating
         h6 Food
         .reviewer__stars
           each num in [5,4,3,2,1]
-            input(type="radio" required id=`star${num}food` name="rating[food]" value=num)
+            input(type="radio" required id=`star${num}food` name="rating[food]" value=num checked=(!review.rating? false : review.rating.food === num))
             label(for=`star${num}food`) #{num} Stars
       .reviewer__rating
         h6 Service
         .reviewer__stars
           each num in [5,4,3,2,1]
-            input(type="radio" required id=`star${num}service` name="rating[service]" value=num)
+            input(type="radio" required id=`star${num}service` name="rating[service]" value=num checked=(!review.rating? false : review.rating.service === num))
             label(for=`star${num}service`) #{num} Stars
       .reviewer__rating
         h6 Ambiance
         .reviewer__stars
           each num in [5,4,3,2,1]
-            input(type="radio" required id=`star${num}ambiance` name="rating[ambiance]" value=num)
+            input(type="radio" required id=`star${num}ambiance` name="rating[ambiance]" value=num checked=(!review.rating? false : review.rating.ambiance === num))
             label(for=`star${num}ambiance`) #{num} Stars
-    input.button(type="Submit" value='Submit Review ->')
+    input.button(type="Submit" value='Submit Review →')
+      
+  if review._id
+    form.card(action=`/delete/reviews/${review._id}` method="POST")
+      input.button(type="submit" value="Delete this review →")

@@ -29,8 +29,8 @@ mixin storeForm(store = {})
           input(type="checkbox" id=choice value=choice name="tags" 
           checked=tags.includes(choice))
           label(for=choice) #{choice}
-    input(type="submit" value="Save ->" class="button")
+    input(type="submit" value="Save →" class="button")
   
   if store._id
     form.card(action=`/delete/${store._id}` method="POST")
-      input.button(type="submit" value="Delete this store")
+      input.button(type="submit" value="Delete this store →")

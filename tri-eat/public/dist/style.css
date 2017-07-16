@@ -960,6 +960,9 @@ label {
     position: absolute;
     height: 100%;
     background-attachment: fixed; }
+  .review__category {
+    margin-right: 2rem;
+    margin-left: auto; }
   .review__header {
     border-bottom: 1px solid #e6e6e6;
     display: -ms-flexbox;
@@ -998,6 +1001,10 @@ label {
     padding: 2rem; }
   .review p {
     white-space: pre-wrap; }
+  .review svg {
+    float: right;
+    width: 25px;
+    fill: black; }
 
 /*
   Reviewer Form

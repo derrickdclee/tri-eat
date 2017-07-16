@@ -8,8 +8,11 @@ mixin review(review)
     .review__stars
       each category in ['Food', 'Service', 'Ambiance']
         .review__category
-          p= category
-          p= `★`.repeat(review.rating[category.toLowerCase()]) + `✩`.repeat(5 - review.rating[category.toLowerCase()])
+          p= `${category} ` + `★`.repeat(review.rating[category.toLowerCase()]) + `✩`.repeat(5 - review.rating[category.toLowerCase()])
     time.review__time(datetime=review.created)= h.moment(review.created).fromNow()
   .review__body
-    p= review.text
+    p
+      = review.text
+      if (review.author._id.equals(user._id) || user.isAdmin)
+        a(href=`/store/${review.store}/reviews/${review.id}/edit`)
+          != h.icon('pencil')

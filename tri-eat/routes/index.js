@@ -20,11 +20,13 @@ router.get('/add',
  3. And finally create the store
 */
 router.post('/add',
+  authController.isAdmin,
   storeController.upload,
   catchErrors(storeController.resize),
   catchErrors(storeController.createStore)
 );
 router.post('/add/:id',
+  authController.isAdmin,
   storeController.upload,
   catchErrors(storeController.resize),
   catchErrors(storeController.updateStore)
@@ -73,9 +75,22 @@ router.post('/account/reset/:token',
   catchErrors(authController.update)
 );
 router.get('/map', storeController.mapPage);
-router.post('/reviews/:id',
+router.post('/reviews/:storeId',
   authController.isLoggedIn,
   catchErrors(reviewController.addReview)
+);
+router.post('/reviews/:storeId/:reviewId',
+  catchErrors(reviewController.canEditReview),
+  catchErrors(reviewController.updateReview)
+);
+router.get('/store/:storeId/reviews/:reviewId/edit',
+  authController.isLoggedIn,
+  catchErrors(reviewController.canEditReview),
+  catchErrors(reviewController.editReview)
+);
+router.post('/delete/reviews/:reviewId',
+  catchErrors(reviewController.canEditReview),
+  catchErrors(reviewController.deleteReview)
 );
 
 router.get('/top', catchErrors(storeController.getTopStores));
