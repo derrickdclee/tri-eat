@@ -7,6 +7,7 @@ const reviewController = require('../controllers/reviewController');
 const {catchErrors} = require('../handlers/errorHandlers');
 
 // Do work here
+// CANNOT have routes of the same form (duh)
 router.get('/', storeController.homePage);
 router.get('/stores', catchErrors(storeController.getStores));
 router.get('/stores/page/:page', catchErrors(storeController.getStores));
@@ -105,5 +106,9 @@ router.get('/hearts',
   catchErrors(storeController.getHearts)
 );
 router.post('/api/reviewer/:id/avg', catchErrors(userController.getAverageRating));
+router.post('/api/reviews/:reviewId/upvote',
+  authController.isLoggedIn,
+  catchErrors(reviewController.upvoteReview)
+);
 
 module.exports = router;

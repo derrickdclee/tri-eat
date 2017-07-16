@@ -44,6 +44,15 @@ const reviewSchema = new mongoose.Schema({
       max: 5
     }
   }
+}, {
+  toJSON: {virtuals: true},
+  toObject: {virtuals: true}
+});
+
+reviewSchema.virtual('upvoteUsers', {
+  ref: 'User',
+  localField: '_id',
+  foreignField: 'upvotes'
 });
 
 function autopopulate(next) {
@@ -60,39 +69,19 @@ function calculateOverall(next) {
 reviewSchema.pre('find', autopopulate);
 reviewSchema.pre('findOne', autopopulate);
 reviewSchema.pre('save', calculateOverall);
-/*
-  Note that populating pre 'save' didn't work!
-*/
-// reviewSchema.pre('save', async function(next) {
-//   try {
-//     const author = await User.findOne({_id: this.author});
-//     let numReviews;
-//     let avgRating;
-//
-//     if (author.ratingStat.numReviews === 0) {
-//       numReviews = 1;
-//       avgRating = this.rating.overall;
-//     } else {
-//       numReviews = author.ratingStat.numReviews + 1;
-//       avgRating = ( (author.ratingStat.avgRating * (numReviews - 1)) + this.rating.overall ) / numReviews;
-//     }
-//
-//     const updates = {
-//       ratingStat: {
-//         numReviews, avgRating
-//       }
-//     };
-//
-//     const updatedAuthor = await User.findOneAndUpdate({_id: this.author},  updates, {
-//       new: true,
-//       runValidators: true
-//     });
-//     console.log(updatedAuthor);
-//   } catch (err) {
-//     console.log(err);
-//   }
-//
-//   next();
-// });
+reviewSchema.pre('remove', async function(next) {
+  // Undo the upvote
+  await User.updateMany(
+    {upvotes: this._id},
+    {
+      $pull: {upvotes: this._id}
+    },
+    {
+      multi: true,
+      runValidators: true
+    }
+  ).exec();
+  next();
+});
 
 module.exports = mongoose.model('Review', reviewSchema);

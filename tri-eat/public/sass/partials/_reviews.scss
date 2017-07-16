@@ -17,6 +17,9 @@
     height: 100%;
     background-attachment: fixed;
   }
+  &__upvote {
+    float: right;
+  }
   &__category{
     margin-right: 2rem;
     margin-left: auto;

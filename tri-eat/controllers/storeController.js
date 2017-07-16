@@ -134,7 +134,8 @@ exports.getStoreBySlug = async (req, res, next) => {
     .findOne({slug: req.params.slug})
     .populate({
       path: 'reviews',
-      options: {sort: sortOptions}
+      options: {sort: sortOptions},
+      populate: {path: 'upvoteUsers'}
     });
   if (! store) return next(); // let the error handlers handle it
   const sortBy = req.query.s || 'newest';

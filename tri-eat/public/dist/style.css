@@ -905,43 +905,6 @@ label {
     .single__location {
       margin-right: 0; } }
 
-.heart__button {
-  background: none;
-  border: 0;
-  outline: 0;
-  position: relative; }
-  .heart__button:after {
-    content: '\2665\FE0F';
-    font-size: 20px;
-    position: absolute;
-    opacity: 0;
-    top: 0; }
-  .heart__button svg {
-    width: 25px;
-    fill: white; }
-  .heart__button--hearted svg {
-    fill: red; }
-  .heart__button--float:after {
-    animation: fly 2.5s 1 ease-out; }
-
-@keyframes fly {
-  0% {
-    transform: translateY(0);
-    left: 0;
-    opacity: 1; }
-  20% {
-    left: 20px; }
-  40% {
-    left: -20px; }
-  60% {
-    left: 20px; }
-  80% {
-    left: -20px; }
-  100% {
-    transform: translateY(-400px);
-    opacity: 0;
-    left: 20px; } }
-
 .review {
   background: white;
   border: 1px solid #e6e6e6;
@@ -960,6 +923,8 @@ label {
     position: absolute;
     height: 100%;
     background-attachment: fixed; }
+  .review__upvote {
+    float: right; }
   .review__category {
     margin-right: 2rem;
     margin-left: auto; }
@@ -1072,6 +1037,80 @@ label {
     .reviewer__meta > * {
       -ms-flex: 1;
           flex: 1; }
+
+.heart__button {
+  background: none;
+  border: 0;
+  outline: 0;
+  position: relative; }
+  .heart__button:after {
+    content: '\2665\FE0F';
+    font-size: 20px;
+    position: absolute;
+    opacity: 0;
+    top: 0; }
+  .heart__button svg {
+    width: 25px;
+    fill: white; }
+  .heart__button--hearted svg {
+    fill: red; }
+  .heart__button--float:after {
+    animation: fly 1.5s 1 ease-out; }
+
+@keyframes fly {
+  0% {
+    transform: translateY(0);
+    left: 0;
+    opacity: 1; }
+  20% {
+    left: 20px; }
+  40% {
+    left: -20px; }
+  60% {
+    left: 20px; }
+  80% {
+    left: -20px; }
+  100% {
+    transform: translateY(-400px);
+    opacity: 0;
+    left: 20px; } }
+
+.upvote__button {
+  background: none;
+  border: 0;
+  outline: 0;
+  position: relative; }
+  .upvote__button:after {
+    content: '\2665\FE0F';
+    font-size: 20px;
+    position: absolute;
+    opacity: 0;
+    top: 0; }
+  .upvote__button svg {
+    width: 25px;
+    fill: black; }
+  .upvote__button--upvoted svg {
+    fill: red; }
+  .upvote__button--float:after {
+    animation: fly 1.5s 1 ease-out; }
+
+@keyframes fly {
+  0% {
+    transform: translateY(0);
+    left: 0;
+    opacity: 1; }
+  20% {
+    left: 20px; }
+  40% {
+    left: -20px; }
+  60% {
+    left: 20px; }
+  80% {
+    left: -20px; }
+  100% {
+    transform: translateY(-400px);
+    opacity: 0;
+    left: 20px; } }
 
 .pagination {
   display: -ms-flexbox;

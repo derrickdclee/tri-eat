@@ -1,4 +1,4 @@
-.heart {
+.upvote {
   &__button {
     background: none;
     border: 0;
@@ -13,9 +13,9 @@
     }
     svg {
       width: 25px;
-      fill: white;
+      fill: black;
     }
-    &--hearted {
+    &--upvoted {
       svg {
         fill: red;
       }

@@ -93,11 +93,25 @@ storeSchema.pre('save', function(next) {
   next();
 });
 
-storeSchema.pre('remove', function(next) {
-  Review.remove({store: this._id}).exec();
-  User.update(
+storeSchema.pre('remove', async function(next) {
+  // remove only works when there is either a callback or exec
+  Review
+    .find({store: this._id})
+    .exec(async function(err, reviews) {
+      if (err) {
+        console.log(err);
+        next();
+      }
+      // async/await might not work with forEach
+      for (let i=0; i<reviews.length; i++) {
+        await reviews[i].remove();
+      }
+    });
+
+  // same for update
+  User.updateMany(
     {hearts: this._id},
-    {$pop:
+    {$pull:
       {hearts: this._id}
     },
     {

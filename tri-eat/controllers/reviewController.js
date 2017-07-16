@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Review = mongoose.model('Review');
 const Store = mongoose.model('Store');
+const User = mongoose.model('User');
 
 exports.addReview = async(req, res) => {
   req.body.author = req.user._id;
@@ -40,8 +41,22 @@ exports.updateReview = async (req, res) => {
 };
 
 exports.deleteReview = async (req, res) => {
-  const deletedReview = await Review.findOneAndRemove({_id: req.params.reviewId});
+  const deletedReview = await Review.findOne({_id: req.params.reviewId});
+  await deletedReview.remove();
 
   req.flash('success', 'Review deleted');
   res.redirect('/');
+};
+
+exports.upvoteReview = async (req, res) => {
+  const upvotes = req.user.upvotes.map(obj => obj.toString());
+  const operator = upvotes.includes(req.params.reviewId)? '$pull' : '$addToSet';
+  await User.findOneAndUpdate(
+    {_id: req.user._id},
+    {[operator]: {upvotes: req.params.reviewId}},
+    {new: true}
+  );
+  const review = await Review.findOne({_id: req.params.reviewId}).populate('upvoteUsers');
+
+  res.json(review);
 };

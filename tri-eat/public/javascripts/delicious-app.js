@@ -9,6 +9,7 @@ import makeMap from './modules/map';
 import ajaxHeart from './modules/heart';
 import ajaxGetAverageRating from './modules/average';
 import sortReviews from './modules/sort';
+import ajaxUpvote from './modules/upvote';
 
 autocomplete( $('#address'), $('#lat'), $('#lng'));
 
@@ -23,3 +24,5 @@ $$('form.heart').on('submit', ajaxHeart);
 $$('form.userAverage').on('submit', ajaxGetAverageRating);
 
 $$('select.sort').on('change', sortReviews);
+
+$$('form.upvote').on('submit', ajaxUpvote);

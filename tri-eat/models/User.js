@@ -26,6 +26,9 @@ const userSchema = new Schema({
   hearts: [
     {type: mongoose.Schema.ObjectId, ref: 'Store'}
   ],
+  upvotes: [
+    {type: mongoose.Schema.ObjectId, ref: 'Review'}
+  ],
   isAdmin: {
     type: Boolean,
     default: false
