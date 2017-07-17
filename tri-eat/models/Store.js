@@ -95,12 +95,11 @@ storeSchema.pre('save', function(next) {
 
 storeSchema.pre('remove', async function(next) {
   // remove only works when there is either a callback or exec
-  Review
+  await Review
     .find({store: this._id})
     .exec(async function(err, reviews) {
       if (err) {
-        console.log(err);
-        next();
+        next(err);
       }
       // async/await might not work with forEach
       for (let i=0; i<reviews.length; i++) {
@@ -118,8 +117,13 @@ storeSchema.pre('remove', async function(next) {
       multi: true,
       runValidators: true
     }
-  ).exec();
-  next();
+  ).exec(function(err, docs) {
+    if (err) {
+      next(err);
+    } else {
+      next();
+    }
+  });
 });
 
 storeSchema.statics.getTagsList = function() {
@@ -166,7 +170,6 @@ storeSchema.statics.getTopStores = function() {
 };
 
 function autopopulate(next) {
-  // populating heartUsers for notifications
   this.populate('author');
   next();
 }

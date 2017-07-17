@@ -66,10 +66,11 @@ exports.getStores = async (req, res) => {
     .skip(skip)
     .limit(limit)
     .sort({createdAt: 'desc'})
-    .populate('reviews');
-
-  const countPromise = Store.count();
-
+    .populate('reviews')
+    .exec();
+  // console.log(storesPromise instanceof global.Promise);
+  const countPromise = Store.count().exec();
+  // console.log(countPromise instanceof global.Promise);
   const [stores, count] = await Promise.all([storesPromise, countPromise]);
   const pages = Math.ceil(count / limit);
 

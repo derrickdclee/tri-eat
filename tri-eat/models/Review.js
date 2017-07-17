@@ -71,7 +71,7 @@ reviewSchema.pre('findOne', autopopulate);
 reviewSchema.pre('save', calculateOverall);
 reviewSchema.pre('remove', async function(next) {
   // Undo the upvote
-  await User.updateMany(
+  User.updateMany(
     {upvotes: this._id},
     {
       $pull: {upvotes: this._id}
@@ -80,8 +80,13 @@ reviewSchema.pre('remove', async function(next) {
       multi: true,
       runValidators: true
     }
-  ).exec();
-  next();
+  ).exec(function(err, docs) {
+    if (err) {
+      next(err);
+    } else {
+      next();
+    }
+  });
 });
 
 module.exports = mongoose.model('Review', reviewSchema);
