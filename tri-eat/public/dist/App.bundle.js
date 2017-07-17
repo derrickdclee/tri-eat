@@ -4530,7 +4530,37 @@ Object.defineProperty(exports, "__esModule", {
 var _bling = __webpack_require__(3);
 
 function sortReviews(e) {
-  window.location.replace('?s=' + this.options[this.selectedIndex].value);
+  var s = void 0,
+      dir = void 0;
+
+  var val = this.options[this.selectedIndex].value;
+  switch (val) {
+    case 'oldest':
+      s = 'created';
+      dir = 'asc';
+      break;
+    case 'newest':
+      s = 'created';
+      dir = 'desc';
+      break;
+    case 'lowest':
+      s = 'rating';
+      dir = 'asc';
+      break;
+    case 'highest':
+      s = 'rating';
+      dir = 'desc';
+      break;
+    case 'leastUpvoted':
+      s = 'upvote';
+      dir = 'asc';
+      break;
+    case 'mostUpvoted':
+      s = 'upvote';
+      dir = 'desc';
+      break;
+  }
+  window.location.replace('?s=' + s + '&dir=' + dir);
 }
 
 exports.default = sortReviews;
@@ -4646,7 +4676,7 @@ function ajaxUpvote(e) {
   e.preventDefault();
   _axios2.default.post(this.action).then(function (res) {
     var isUpvoted = _this.upvote.classList.toggle('upvote__button--upvoted');
-    _this.previousSibling.textContent = res.data.upvoteUsers.length;
+    _this.nextSibling.textContent = res.data.upvoteUsers.length;
 
     if (isUpvoted) {
       // add the animation, which will take place over 2.5 s

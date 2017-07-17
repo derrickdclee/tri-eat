@@ -25,17 +25,19 @@ block content
     if user
       +reviewForm(store)
       
-    if store.reviews.length
+    if reviews.length
       .sort__container
         select.sort
           option(value="newest" selected=(sortBy === "newest")) Newest First
           option(value="oldest" selected=(sortBy === "oldest")) Oldest First
           option(value="highest" selected=(sortBy === "highest")) Highest First
           option(value="lowest" selected=(sortBy === "lowest")) Lowest First
+          option(value="mostUpvoted" selected=(sortBy === "mostUpvoted")) Most Upvoted First
+          option(value="leastUpvoted" selected=(sortBy === "leastUpvoted")) Least Upvoted First
     
-    if store.reviews
+    if reviews
       .reviews
-        each r in store.reviews
+        each r in reviews
           .review
             +review(r)
       

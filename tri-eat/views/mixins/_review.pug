@@ -11,15 +11,15 @@ mixin review(review)
           p= `${category} ` + `★`.repeat(review.rating[category.toLowerCase()]) + `✩`.repeat(5 - review.rating[category.toLowerCase()])
     time.review__time(datetime=review.created)= h.moment(review.created).fromNow()
   .review__body
-    p
-      = review.text
-      .review__upvote= review.upvoteUsers.length
-      if (user)
-        form.upvote(action=`/api/reviews/${review._id}/upvote` method="POST")
-          - const upvotes = user.upvotes.map(obj => obj.toString());
-          - const upvoteClass = upvotes.includes(review._id.toString())? 'upvote__button--upvoted' : '';
-          button.upvote__button(type="submit" class=upvoteClass name="upvote")
-            != h.icon('heart')
+    p= review.text
+      .review__upvote
+        if (user)
+          form.upvote(action=`/api/reviews/${review._id}/upvote` method="POST")
+            - const upvotes = user.upvotes.map(obj => obj.toString());
+            - const upvoteClass = upvotes.includes(review._id.toString())? 'upvote__button--upvoted' : '';
+            button.upvote__button(type="submit" class=upvoteClass name="upvote")
+              != h.icon('heart')
+        span= review.upvoteUsers.length
       if (review.author._id.equals(user._id) || user.isAdmin)
         a(href=`/store/${review.store}/reviews/${review.id}/edit`)
           != h.icon('pencil')

@@ -16,6 +16,7 @@ const uuid = require('uuid');
 
 const Store = mongoose.model('Store'); // from start.js
 const User = mongoose.model('User');
+const Review = mongoose.model('Review');
 
 //===========================================================================//
 exports.homePage = (req, res) => {
@@ -111,37 +112,64 @@ exports.updateStore = async (req, res) => {
 
 exports.getStoreBySlug = async (req, res, next) => {
   let sortOptions;
+  let store;
+  let reviews;
+  let sortBy;
 
   if (!req.query.s) {
     sortOptions = {created: -1};
+    sortBy = 'newest';
+  } else if (req.query.s === 'upvote') {
+    store = await Store
+      .findOne({slug: req.params.slug})
+      .populate({
+        path: 'reviews',
+        populate: {path: 'upvoteUsers'}
+      });
+    reviews = store.reviews;
+    let dir = req.query.dir === 'asc'? 1 : -1;
+    reviews.sort(function(a, b) {
+      if (a.upvoteUsers.length < b.upvoteUsers.length) {
+        return -1 * dir;
+      } else if (a.upvoteUsers.length > b.upvoteUsers.length){
+        return 1 * dir;
+      } else {
+        return 0;
+      }
+    });
+    sortBy = req.query.dir === 'asc'? 'leastUpvoted' : 'mostUpvoted';
+    res.render('store', {store, reviews, title: store.name, sortBy});
+    return;
   } else {
-    switch (req.query.s) {
-      case 'oldest':
-        sortOptions = {created: 1};
-        break;
-      case 'newest':
-        sortOptions = {created: -1};
-        break;
-      case 'lowest':
-        // when using dot notation, the key must be in quotes
-        sortOptions = {"rating.overall": 1};
-        break;
-      case 'highest':
-        sortOptions = {"rating.overall": -1};
+    let dir = req.query.dir === 'asc'? 1 : -1;
+    if (req.query.s === 'created') {
+      sortOptions = {created: dir};
+      sortBy = dir === 1? 'oldest' : 'newest';
+    } else {
+      sortOptions = {"rating.overall": dir};
+      sortBy = dir === 1? 'lowest' : 'highest';
     }
   }
 
-  const store = await Store
+  store = await Store
     .findOne({slug: req.params.slug})
     .populate({
       path: 'reviews',
       options: {sort: sortOptions},
-      populate: {path: 'upvoteUsers'}
+      populate: {path: 'upvoteUsers'} // deep population
     });
   if (! store) return next(); // let the error handlers handle it
-  const sortBy = req.query.s || 'newest';
-  res.render('store', {store, title: store.name, sortBy: req.query.s});
+  res.render('store', {store, reviews: store.reviews, title: store.name, sortBy});
 };
+
+// exports.sortByUpvote = async(req, res) => {
+//   const store = await Store.findOne({slug: req.params.slug});
+//   const reviews = await Review.sortByUpvote(store._id, req.query.s);
+//
+//   const sortBy = req.query.s === 'desc'? 'mostUpvoted' : 'leastUpvoted';
+//   //res.render('store', {store, reviews, title: store.name, sortBy});
+//   res.json(reviews);
+// };
 
 exports.getStoresByTag = async(req, res) => {
   const tag = req.params.tag;
@@ -227,4 +255,4 @@ exports.getHearts = async (req, res) => {
 exports.getTopStores = async (req, res) => {
   const stores = await Store.getTopStores();
   res.render('topStores', {stores});
-}
+};

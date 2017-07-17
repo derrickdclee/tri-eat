@@ -923,8 +923,6 @@ label {
     position: absolute;
     height: 100%;
     background-attachment: fixed; }
-  .review__upvote {
-    float: right; }
   .review__category {
     margin-right: 2rem;
     margin-left: auto; }
@@ -963,13 +961,21 @@ label {
     -ms-flex-direction: column;
         flex-direction: column; }
   .review__body {
-    padding: 2rem; }
+    padding: 4rem 4rem 5rem 4rem; }
+    .review__body a {
+      float: right; }
+      .review__body a svg {
+        width: 25px;
+        fill: black; }
+  .review__upvote {
+    text-align: center;
+    float: left;
+    display: -ms-flexbox;
+    display: flex; }
+    .review__upvote span {
+      font-size: 2rem; }
   .review p {
     white-space: pre-wrap; }
-  .review svg {
-    float: right;
-    width: 25px;
-    fill: black; }
 
 /*
   Reviewer Form

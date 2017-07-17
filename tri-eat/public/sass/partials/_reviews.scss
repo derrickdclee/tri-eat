@@ -17,9 +17,6 @@
     height: 100%;
     background-attachment: fixed;
   }
-  &__upvote {
-    float: right;
-  }
   &__category{
     margin-right: 2rem;
     margin-left: auto;
@@ -58,14 +55,24 @@
     flex-direction: column;
   }
   &__body {
-    padding: 2rem;
+    padding: 4rem 4rem 5rem 4rem;
+    a {
+      float: right;
+      svg {
+        width: 25px;
+        fill: black;
+      }
+    }
+  }
+  &__upvote {
+    text-align: center;
+    float: left;
+    display: flex;
+    span {
+      font-size: 2rem;
+    }
   }
   p {
     white-space:pre-wrap;
-  }
-  svg {
-    float: right;
-    width: 25px;
-    fill: black;
   }
 }

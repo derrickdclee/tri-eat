@@ -49,10 +49,34 @@ const reviewSchema = new mongoose.Schema({
   toObject: {virtuals: true}
 });
 
+// reviewSchema.statics.sortByUpvote = function(store, sortDir) {
+//   const sortDirection = sortDir === 'asc'? 1 : -1;
+//   return this.aggregate([
+//     // get reviews that belong to this store
+//     {$match: {store: mongoose.Types.ObjectId(store)}},
+//     // populate the upvoteUsers
+//     {$lookup: {from: 'users', localField: '_id', foreignField: 'upvotes', as: 'upvoteUsers'}},
+//     // populate the author
+//     {$lookup: {from: 'users', localField: 'author', foreignField: '_id', as: 'author'}},
+//     {$project: {
+//       created: '$$ROOT.created',
+//       rating: '$$ROOT.rating',
+//       gravatar: '$$ROOT.gravatar',
+//       text: '$$ROOT.text',
+//       author: '$$ROOT.author',
+//       upvoteUsers: '$upvoteUsers',
+//       upvoteUsersLength: {
+//         $size: "$upvoteUsers"
+//       }
+//     }},
+//     {$sort: {upvoteUsersLength: sortDirection}}
+//   ]);
+// };
+
 reviewSchema.virtual('upvoteUsers', {
   ref: 'User',
   localField: '_id',
-  foreignField: 'upvotes'
+  foreignField: 'upvotes' // foreignField can be an array
 });
 
 function autopopulate(next) {

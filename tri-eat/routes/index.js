@@ -42,6 +42,7 @@ router.get('/stores/:id/edit',
   3. For each author
 */
 router.get('/store/:slug', catchErrors(storeController.getStoreBySlug));
+// router.get('/store/:slug/sortByUpvote', catchErrors(storeController.sortByUpvote));
 router.get('/tags', catchErrors(storeController.getStoresByTag));
 router.get('/tags/:tag', catchErrors(storeController.getStoresByTag));
 router.post('/delete/:id',

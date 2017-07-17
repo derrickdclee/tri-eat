@@ -1,14 +1,41 @@
 [
   {
-    "_id": "596b90f66551ca1bac220242",
+    "_id": "596c46fa488d9123edec0be3",
     "slug": "testing",
     "name": "Testing",
-    "description": "Testing",
+    "description": "dadf",
     "author": "5966e33981369b0c2219e849",
     "location": {
-      "address": "Testing Grounds, City Road, Southbank, Victoria, Australia",
-      "coordinates": [144.967621, -37.821347]
+      "address": "DFA Passport Appointment System, Parañaque, NCR, Philippines",
+      "coordinates": [120.99029840000003, 14.5297243]
     },
-    "createdAt":
+    "createdAt": "2017-07-17T14:11:22.946Z",
+    "tags": ["Wifi"]
+  },
+  {
+    "_id": "596c47753434ef240d4b4251",
+    "slug": "brave-new-store",
+    "name": "Brave new store",
+    "description": "lalalal",
+    "author": "5966e33981369b0c2219e849",
+    "location": {
+      "address": "Lalalajpatray Colony, Pratap Nagar, Jodhpur, Rajasthan, India",
+      "coordinates": [73.0012309, 26.2802171]
+    },
+    "createdAt": "2017-07-17T14:13:25.685Z",
+    "tags": ["Wifi"]
+  },
+  {
+    "_id": "596c4845963b5c245b7f7466",
+    "slug": "blabla",
+    "name": "blabla",
+    "description": "blablabla",
+    "author": "5966e33981369b0c2219e849",
+    "location": {
+      "address": "Bali, Indonesia",
+      "coordinates": [115.18891600000006, -8.4095178]
+    },
+    "createdAt": "2017-07-17T14:16:53.515Z",
+    "tags": ["Family Friendly", "Vegetarian"]
   }
 ]

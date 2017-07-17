@@ -7,7 +7,7 @@ function ajaxUpvote(e) {
     .post(this.action)
     .then(res => {
       const isUpvoted = this.upvote.classList.toggle('upvote__button--upvoted');
-      this.previousSibling.textContent = res.data.upvoteUsers.length;
+      this.nextSibling.textContent = res.data.upvoteUsers.length;
 
       if (isUpvoted) {
         // add the animation, which will take place over 2.5 s
