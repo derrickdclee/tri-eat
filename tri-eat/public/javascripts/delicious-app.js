@@ -1,7 +1,5 @@
 import '../sass/style.scss';
 
-import io from 'socket.io-client';
-
 import { $, $$ } from './modules/bling';
 import autocomplete from './modules/autocomplete';
 import typeAhead from './modules/typeAhead';
@@ -10,6 +8,7 @@ import ajaxHeart from './modules/heart';
 import ajaxGetAverageRating from './modules/average';
 import sortReviews from './modules/sort';
 import ajaxUpvote from './modules/upvote';
+import deleteStuff from './modules/deleteStuff';
 
 autocomplete( $('#address'), $('#lat'), $('#lng'));
 
@@ -26,3 +25,5 @@ $$('form.userAverage').on('submit', ajaxGetAverageRating);
 $$('select.sort').on('change', sortReviews);
 
 $$('form.upvote').on('submit', ajaxUpvote);
+
+$$('.deleteButton').on('click', deleteStuff);

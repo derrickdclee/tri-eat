@@ -26,5 +26,6 @@ mixin reviewForm(store, review={})
     input.button(type="Submit" value='Submit Review →')
       
   if review._id
-    form.card(action=`/delete/reviews/${review._id}` method="POST")
-      input.button(type="submit" value="Delete this review →")
+    form(action=`/delete/reviews/${review._id}` method="POST")
+    button.deleteButton(type="button")
+      != h.icon('delete')

@@ -32,7 +32,6 @@
     "foundation-sites": "^6.4.1",
     "glob": "7.1.1",
     "html-to-text": "3.2.0",
-    "http": "0.0.0",
     "jimp": "0.2.27",
     "juice": "4.0.2",
     "lodash": "^4.17.4",
@@ -48,7 +47,6 @@
     "pug": "2.0.0-beta6",
     "sanitize-html": "^1.14.1",
     "slugs": "0.1.3",
-    "socket.io": "^2.0.3",
     "uuid": "3.0.1",
     "validator": "7.0.0"
   },

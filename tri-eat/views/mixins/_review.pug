@@ -1,10 +1,13 @@
 mixin review(review)
   .review__header
     .review__author
-      img.avatar(src=review.author.gravatar)
-      p= review.author.name
-      form.userAverage(action=`/api/reviewer/${review.author._id}/avg` method="POST")
-        input.button(type="submit" value="Get Average")
+      .review__author--info
+        img.avatar(src=review.author.gravatar)
+        p= review.author.name
+        form.userAverage(action=`/api/reviewer/${review.author._id}/avg` method="POST")
+          button.review__avg(name="avg" type="submit")
+            != h.icon('bar-graph')
+      .review__author--avg
     .review__stars
       each category in ['Food', 'Service', 'Ambiance']
         .review__category
@@ -20,6 +23,6 @@ mixin review(review)
             button.upvote__button(type="submit" class=upvoteClass name="upvote")
               != h.icon('heart')
         span= review.upvoteUsers.length
-      if (review.author._id.equals(user._id) || user.isAdmin)
+      if (user && (review.author._id.equals(user._id) || user.isAdmin) )
         a(href=`/store/${review.store}/reviews/${review.id}/edit`)
           != h.icon('pencil')
