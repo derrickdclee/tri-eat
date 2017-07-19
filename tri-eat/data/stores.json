@@ -1,41 +1,28 @@
 [
   {
-    "_id": "596c46fa488d9123edec0be3",
-    "slug": "testing",
-    "name": "Testing",
-    "description": "dadf",
+    "_id": "596e410c86b8813cb73fa5ad",
+    "slug": "metro-8",
+    "name": "Metro 8",
+    "description": "Good steak place",
     "author": "5966e33981369b0c2219e849",
     "location": {
-      "address": "DFA Passport Appointment System, Parañaque, NCR, Philippines",
-      "coordinates": [120.99029840000003, 14.5297243]
+      "address": "Metro 8 Steakhouse, 9th Street, Durham, NC, United States",
+      "coordinates": [-78.92195500000003, 36.0093635]
     },
     "createdAt": "2017-07-17T14:11:22.946Z",
-    "tags": ["Wifi"]
+    "tags": ["Open Late", "Family Friendly", "Licensed"]
   },
   {
-    "_id": "596c47753434ef240d4b4251",
-    "slug": "brave-new-store",
-    "name": "Brave new store",
-    "description": "lalalal",
+    "_id": "596e48d433b5443d9064596b",
+    "slug": "dames-chicken--waffles",
+    "name": "Dame's Chicken & Waffles",
+    "description": "Best chicken place in the world",
     "author": "5966e33981369b0c2219e849",
     "location": {
-      "address": "Lalalajpatray Colony, Pratap Nagar, Jodhpur, Rajasthan, India",
-      "coordinates": [73.0012309, 26.2802171]
+      "address": "Dame's Chicken & Waffles, West Main Street, Durham, NC, United States",
+      "coordinates": [-78.90327030000003, 35.9962325]
     },
     "createdAt": "2017-07-17T14:13:25.685Z",
-    "tags": ["Wifi"]
-  },
-  {
-    "_id": "596c4845963b5c245b7f7466",
-    "slug": "blabla",
-    "name": "blabla",
-    "description": "blablabla",
-    "author": "5966e33981369b0c2219e849",
-    "location": {
-      "address": "Bali, Indonesia",
-      "coordinates": [115.18891600000006, -8.4095178]
-    },
-    "createdAt": "2017-07-17T14:16:53.515Z",
-    "tags": ["Family Friendly", "Vegetarian"]
+    "tags": ["Wifi", "Family Friendly"]
   }
 ]

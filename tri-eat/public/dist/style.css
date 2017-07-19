@@ -960,8 +960,6 @@ label {
     .review__author--avg {
       margin-top: 15px;
       text-align: center; }
-      .review__author--avg:hover {
-        cursor: pointer; }
     .review__author svg {
       margin-top: 15px;
       margin-left: 10px;
@@ -972,6 +970,8 @@ label {
     height: 50px;
     background-color: white;
     border: 0; }
+    .review__avg:hover {
+      cursor: pointer; }
   .review__time {
     font-size: 1.2rem;
     color: #999999; }
@@ -1008,6 +1008,9 @@ label {
   .review__sort {
     margin-top: 40px;
     margin-bottom: 20px; }
+
+.upvote__button:hover {
+  cursor: pointer; }
 
 /*
   Reviewer Form

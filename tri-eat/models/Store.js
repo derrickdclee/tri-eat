@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise; // use the ES6 promise
 const slug = require('slugs');
-const sanitizeHTML = require('sanitize-html');
+// const sanitizeHTML = require('sanitize-html');
 
 const User = mongoose.model('User');
 const Review = mongoose.model('Review');
@@ -67,31 +67,25 @@ storeSchema.virtual('heartUsers', {
   foreignField: 'hearts'
 });
 
-storeSchema.pre('save', async function(next) {
-  // if the name is not modified, skip this step
-  if (!this.isModified('name')) {
-    next();
-    return;
-  }
-  this.slug = slug(this.name);
-  // find other stores that have a slug of wes, wes-1, wes-2...
-  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
-  const storesWithSlug = await this.constructor.find({slug: slugRegEx});
-  if (storesWithSlug.length) {
-    this.slug = `${this.slug}-${storesWithSlug.length + 1}`;
-  }
-  next();
-});
+// pre findOneAndUpdate sucks!
+// in query middleware, 'this' refers to the Query
+
+// storeSchema.pre('findOneAndUpdate', async function(next) {
+//   console.log(this.getUpdate());
+//   this.update({}, {$set: {slug: mySlug}});
+//   console.log(this.getUpdate());
+//   next();
+// });
 
 // this functionality needs to be extended
-storeSchema.pre('save', function(next) {
-  const sanitizedName = sanitizeHTML(this.name, {
-    allowedTags: [],
-    allowedAttributes: []
-  });
-  this.name = sanitizedName;
-  next();
-});
+// storeSchema.pre('save', function(next) {
+//   const sanitizedName = sanitizeHTML(this.name, {
+//     allowedTags: [],
+//     allowedAttributes: []
+//   });
+//   this.name = sanitizedName;
+//   next();
+// });
 
 storeSchema.pre('remove', async function(next) {
   // remove only works when there is either a callback or exec
@@ -166,6 +160,41 @@ storeSchema.statics.getTopStores = function() {
     },
     // Limit to at most 10
     { $limit: 10}
+  ]);
+};
+
+storeSchema.statics.getTrending = function() {
+  const timeThreshold = Date.now() - 3 * 24 * 60 * 60 * 1000;
+  return this.aggregate([
+    {
+      $lookup: {from: 'reviews', localField: '_id', foreignField: 'store', as: 'reviews'}
+    },
+    {
+      $project: {
+        photo: '$$ROOT.photo',
+        name: '$$ROOT.name',
+        slug: '$$ROOT.slug',
+        latestReviews: {
+          $filter: {
+            input: '$reviews',
+            as: 'review',
+            cond: {$gte: ['$$review.created', new Date(timeThreshold)]}
+          }
+        }
+      }
+    },
+    {
+      $project: {
+        photo: '$$ROOT.photo',
+        name: '$$ROOT.name',
+        slug: '$$ROOT.slug',
+        latestReviewsLength: {
+          $size: '$latestReviews'
+        }
+      }
+    },
+    {$sort: {count: -1}},
+    {$limit: 5}
   ]);
 };
 

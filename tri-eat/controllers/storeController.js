@@ -13,6 +13,7 @@ const multerOptions = {
 };
 const jimp = require('jimp');
 const uuid = require('uuid');
+const slug = require('slugs');
 
 const Store = mongoose.model('Store'); // from start.js
 const User = mongoose.model('User');
@@ -47,6 +48,7 @@ exports.resize = async (req, res, next) => {
 
 exports.createStore = async (req, res) => {
   req.body.author = req.user._id;
+  req.body.slug = await setSlug(req.body.name);
   const store = await (new Store(req.body)).save();
   /*
     flash only works if we are using Sessions
@@ -96,11 +98,22 @@ exports.editStore = async (req, res) => {
   res.render('editStore', {title: `Edit ${store.name}`, store});
 };
 
+async function setSlug(name) {
+  let mySlug = slug(name);
+  const slugRegEx = new RegExp(`^(${mySlug})((-[0-9]*$)?)$`, 'i');
+  const storesWithSameSlug = await Store.find({slug: slugRegEx});
+  if (storesWithSameSlug.length) {
+    mySlug = `${mySlug}-${storesWithSameSlug.length + 1}`;
+  }
+
+  return mySlug;
+}
+
 exports.updateStore = async (req, res) => {
   // set the location data to be a Point
   // console.log(req.body);
   req.body.location.type = 'Point';
-
+  req.body.slug = await setSlug(req.body.name);
   const store = await Store.findOneAndUpdate({_id: req.params.id}, req.body, {
     new: true, // return the new store instead of the old one
     runValidators: true, // force the model to run validators
@@ -180,6 +193,11 @@ exports.getStoresByTag = async(req, res) => {
 
   const [tags, stores] = await Promise.all([tagsPromise, storesPromise]);
   res.render('tag', {tags, title: 'Tags', tag, stores});
+};
+
+exports.getTrending = async(req, res) => {
+  const trendingStores = await Store.getTrending();
+  res.render('trendingStores', {stores: trendingStores});
 };
 
 exports.deleteStore = async(req, res) => {

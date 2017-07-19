@@ -1018,7 +1018,28 @@ function ajaxGetAverageRating(e) {
 exports.default = ajaxGetAverageRating;
 
 /***/ }),
-/* 12 */,
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _bling = __webpack_require__(1);
+
+function deleteStuff(e) {
+  var result = confirm('Are you sure you want to delete this?');
+  if (result) {
+    this.previousSibling.submit();
+  }
+}
+
+exports.default = deleteStuff;
+
+/***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2971,7 +2992,7 @@ var _upvote = __webpack_require__(17);
 
 var _upvote2 = _interopRequireDefault(_upvote);
 
-var _deleteStuff = __webpack_require__(44);
+var _deleteStuff = __webpack_require__(12);
 
 var _deleteStuff2 = _interopRequireDefault(_deleteStuff);
 
@@ -2994,34 +3015,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (0, _bling.$$)('form.upvote').on('submit', _upvote2.default);
 
 (0, _bling.$$)('.deleteButton').on('click', _deleteStuff2.default);
-
-/***/ }),
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _bling = __webpack_require__(1);
-
-function deleteStuff(e) {
-  var result = confirm('Are you sure you want to delete this?');
-  if (result) {
-    this.previousSibling.submit();
-  }
-}
-
-exports.default = deleteStuff;
 
 /***/ })
 /******/ ]);

@@ -50,6 +50,8 @@ router.post('/delete/:id',
   storeController.deleteStore
 );
 
+router.get('/trending', catchErrors(storeController.getTrending));
+
 router.get('/login',
   authController.isNotLoggedIn,
   userController.loginForm
