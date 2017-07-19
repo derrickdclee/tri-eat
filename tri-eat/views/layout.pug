@@ -14,10 +14,17 @@ html
               a.nav__link.nav__link--logo(href="/")
                 != h.icon('logo')
             each item in h.menu
-              li.nav__item
-                a.nav__link(href=item.slug, class=(currentPath.startsWith(item.slug) ? 'nav__link--active' : ''))
-                  != h.icon(item.icon)
-                  span #{item.title}
+              if (item.title === 'Add')
+                if (user && user.isAdmin)
+                  li.nav__item
+                    a.nav__link(href=item.slug, class=(currentPath.startsWith(item.slug) ? 'nav__link--active' : ''))
+                      != h.icon(item.icon)
+                      span #{item.title}
+              else
+                li.nav__item
+                  a.nav__link(href=item.slug, class=(currentPath.startsWith(item.slug) ? 'nav__link--active' : ''))
+                    != h.icon(item.icon)
+                    span #{item.title}
           .nav__section.nav__section--search
             .search
               input.search__input(type="text" placeholder="Coffee, beer..." name="search")
