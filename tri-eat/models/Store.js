@@ -61,12 +61,6 @@ storeSchema.virtual('reviews', {
   foreignField: 'store' // which field on the review?
 });
 
-storeSchema.virtual('heartUsers', {
-  ref: 'User',
-  localField: '_id',
-  foreignField: 'hearts'
-});
-
 // pre findOneAndUpdate sucks!
 // in query middleware, 'this' refers to the Query
 
@@ -198,12 +192,12 @@ storeSchema.statics.getTrending = function() {
   ]);
 };
 
-function autopopulate(next) {
-  this.populate('author');
-  next();
-}
-
-storeSchema.pre('find', autopopulate);
-storeSchema.pre('findOne', autopopulate);
+// function autopopulate(next) {
+//   this.populate('author');
+//   next();
+// }
+//
+// storeSchema.pre('find', autopopulate);
+// storeSchema.pre('findOne', autopopulate);
 
 module.exports = mongoose.model('Store', storeSchema);

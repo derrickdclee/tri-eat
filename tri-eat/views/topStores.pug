@@ -2,7 +2,8 @@ extends layout
 
 block content
   .inner
-    h2 Top #{stores.length} Stores
+    - const plural = stores.length > 1? 'Stores' : 'Store'
+    h2 Top #{stores.length} #{plural}
     table.table
       thead
         td Photo

@@ -64,6 +64,7 @@ exports.getStores = async (req, res) => {
   const skip = limit * (page - 1);
 
   // Query the db for a list of all stores
+  // implemented with pagination
   const storesPromise = Store
     .find()
     .skip(skip)

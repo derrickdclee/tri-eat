@@ -1008,7 +1008,8 @@ function ajaxGetAverageRating(e) {
   _axios2.default.post(this.action).then(function (res) {
     var rating = res.data[0].avgRating;
     var div = _this.parentNode.nextSibling;
-    div.innerHTML += 'The average rating of this user\'s reviews is ' + rating;
+    var formattedRating = Math.round(rating * 10) / 10;
+    div.innerHTML += 'The average rating of this user\'s reviews is ' + formattedRating + ' / 5';
     _this.avg.disabled = true;
   }).catch(function (err) {
     console.log(err);

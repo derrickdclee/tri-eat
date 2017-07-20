@@ -1074,7 +1074,8 @@ label {
         justify-content: center;
     -ms-flex-align: center;
         align-items: center;
-    border-top: 1px solid #e6e6e6; }
+    border-top: 1px solid #e6e6e6;
+    padding-bottom: 30px; }
     .reviewer__meta > * {
       -ms-flex: 1;
           flex: 1; }
@@ -1090,6 +1091,8 @@ label {
     position: absolute;
     opacity: 0;
     top: 0; }
+  .heart__button:hover {
+    cursor: pointer; }
   .heart__button svg {
     width: 25px;
     fill: white; }
