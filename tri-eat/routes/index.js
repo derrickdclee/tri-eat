@@ -4,6 +4,7 @@ const storeController = require('../controllers/storeController');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const reviewController = require('../controllers/reviewController');
+const uploadController = require('../controllers/uploadController');
 const {catchErrors} = require('../handlers/errorHandlers');
 
 // Do work here
@@ -22,14 +23,14 @@ router.get('/add',
 */
 router.post('/add',
   authController.isAdmin,
-  storeController.upload,
-  catchErrors(storeController.resize),
+  uploadController.upload,
+  catchErrors(uploadController.resize),
   catchErrors(storeController.createStore)
 );
 router.post('/add/:id',
   authController.isAdmin,
-  storeController.upload,
-  catchErrors(storeController.resize),
+  uploadController.upload,
+  catchErrors(uploadController.resize),
   catchErrors(storeController.updateStore)
 );
 router.get('/stores/:id/edit',
@@ -81,6 +82,8 @@ router.post('/account/reset/:token',
 router.get('/map', storeController.mapPage);
 router.post('/reviews/:storeId',
   authController.isLoggedIn,
+  uploadController.upload,
+  catchErrors(uploadController.resize),
   catchErrors(reviewController.addReview)
 );
 router.post('/reviews/:storeId/:reviewId',

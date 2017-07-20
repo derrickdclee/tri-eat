@@ -22,6 +22,7 @@ const reviewSchema = new mongoose.Schema({
     type: String,
     required: 'Your review must have text!'
   },
+  photo: {type: String},
   rating: {
     food: {
       type: Number,

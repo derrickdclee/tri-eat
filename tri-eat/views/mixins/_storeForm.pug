@@ -5,12 +5,12 @@ mixin storeForm(store = {})
       input(type="text" name="name" value=store.name id="storeName")
       label(for="storeDescription") Description 
       textarea(name="description" id="storeDescription")= store.description
-      
+      input(name="isStore" value="true" type="hidden")
       //- Image uploads
       label(for="storePhoto") Photo
-        input(type="file" name="photo" id="storePhoto" accept="image/gif, image/png, image/jpeg")  
-        if store.photo
-          img(src=`/uploads/${store.photo}` alt=store.name width=200)
+      input(type="file" name="photo" id="storePhoto" accept="image/gif, image/png, image/jpeg")  
+      if store.photo
+        img(src=`/uploads/stores/${store.photo}` alt=store.name width=200)
       //- Address
       label(for="address") Address
       //- This attr[nestedAttr] syntax is necessary

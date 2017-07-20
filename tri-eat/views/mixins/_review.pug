@@ -1,21 +1,26 @@
 mixin review(review)
   .review__header
-    .review__author
-      .review__author--info
+    .review__header--author
+      .review__header--author--info
         img.avatar(src=review.author.gravatar)
         p= review.author.name
         form.userAverage(action=`/api/reviewer/${review.author._id}/avg` method="POST")
-          button.review__avg(name="avg" type="submit")
+          button.review__header--author--info--avgBtn(name="avg" type="submit")
             != h.icon('bar-graph')
-      .review__author--avg
-    .review__stars
+      .review__header--author--avg
+    .review__header--stars
       each category in ['Food', 'Service', 'Ambiance']
-        .review__category
+        .review__header--stars--category
           p= `${category} ` + `★`.repeat(review.rating[category.toLowerCase()]) + `✩`.repeat(5 - review.rating[category.toLowerCase()])
-    time.review__time(datetime=review.created)= h.moment(review.created).fromNow()
+    time.review__header--time(datetime=review.created)= h.moment(review.created).fromNow()
   .review__body
-    p= review.text
-      .review__upvote
+    .review__body--text 
+      p= review.text
+    if review.photo
+      .review__body--photo
+        img(src=`/uploads/reviews/${review.photo}`)
+    .review__body--control
+      .review__body--control--upvote
         form.upvote(action=`/api/reviews/${review._id}/upvote` method="POST")
           - const upvotes = user && user.upvotes.map(obj => obj.toString());
           - const upvoteClass = user && upvotes.includes(review._id.toString())? 'upvote__button--upvoted' : '';
@@ -23,5 +28,6 @@ mixin review(review)
             != h.icon('heart')
         span= review.upvoteUsers.length
       if (user && (review.author._id.equals(user._id) || user.isAdmin) )
-        a(href=`/store/${review.store}/reviews/${review.id}/edit`)
-          != h.icon('pencil')
+        .review__body--control--edit
+          a(href=`/store/${review.store}/reviews/${review.id}/edit`)
+            != h.icon('pencil')
