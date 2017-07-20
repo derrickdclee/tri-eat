@@ -7,7 +7,7 @@ const Review = mongoose.model('Review');
 
 //===========================================================================//
 exports.homePage = (req, res) => {
-  res.render('index', {title: 'Welcome to Tri Eat!'});
+  res.render('index', {title: 'Home'});
 };
 
 exports.addStore = (req, res) => {
@@ -166,7 +166,7 @@ exports.getStoresByTag = async(req, res) => {
 
 exports.getTrending = async(req, res) => {
   const trendingStores = await Store.getTrending();
-  res.render('trendingStores', {stores: trendingStores});
+  res.render('trendingStores', {title: 'Trending Stores', stores: trendingStores});
 };
 
 exports.deleteStore = async(req, res) => {
@@ -241,5 +241,5 @@ exports.getHearts = async (req, res) => {
 
 exports.getTopStores = async (req, res) => {
   const stores = await Store.getTopStores();
-  res.render('topStores', {stores});
+  res.render('topStores', {title: 'Top Stores', stores});
 };

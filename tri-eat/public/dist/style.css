@@ -1060,11 +1060,14 @@ label {
         .reviewer__stars input + label:hover, .reviewer__stars input + label:hover ~ label {
           color: #ffdd74; }
   .reviewer textarea {
-    border: 0;
     outline: 0;
     font-size: 2rem;
     padding: 2rem;
     height: 200px; }
+  .reviewer__photo label {
+    margin-left: 10px; }
+  .reviewer__photo input {
+    border: 0; }
   .reviewer__meta {
     display: -ms-flexbox;
     display: flex;

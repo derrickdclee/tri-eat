@@ -187,7 +187,12 @@ storeSchema.statics.getTrending = function() {
         }
       }
     },
-    {$sort: {count: -1}},
+    {
+      $match: {
+        latestReviewsLength: {$gt: 0}
+      }
+    },
+    {$sort: {latestReviewsLength: -1}},
     {$limit: 5}
   ]);
 };

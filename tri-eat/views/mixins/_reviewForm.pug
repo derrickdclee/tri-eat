@@ -1,13 +1,15 @@
 mixin reviewForm(store, review={})
   form.reviewer(action=`/reviews/${store._id}/${review._id || ''}` method="POST" enctype="multipart/form-data")
-    textarea(name="text" placeholder="Did you try this place? Have something to say? Leave a review!")
-      if review.text
-        != review.text
-    input(name="isStore" value="false" type="hidden")
-    label(for="reviewPhoto") Photo
-    input(type="file" name="photo" id="reviewPhoto" accept="image/gif, image/png, image/jpeg")
-    if review.photo
-      img(src=`/uploads/reviews/${review.photo}` alt=store.name width=200)
+    .reviewer__text
+      textarea(name="text" placeholder="Did you try this place? Have something to say? Leave a review!")
+        if review.text
+          != review.text
+      input(name="isStore" value="false" type="hidden")
+    .reviewer__photo
+      label(for="reviewPhoto") Photo
+      input(type="file" name="photo" id="reviewPhoto" accept="image/gif, image/png, image/jpeg")
+      if review.photo
+        img(src=`/uploads/reviews/${review.photo}` alt=store.name width=200)
     .reviewer__meta
       .reviewer__rating
         h6 Food

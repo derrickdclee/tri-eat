@@ -44,11 +44,18 @@
     }
   }
   textarea {
-    border: 0;
     outline: 0;
     font-size: 2rem;
     padding: 2rem;
     height: 200px;
+  }
+  &__photo {
+    label {
+      margin-left: 10px;
+    }
+    input {
+      border: 0;
+    }
   }
   &__meta {
     display: flex;
